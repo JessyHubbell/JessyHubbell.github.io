@@ -16,7 +16,7 @@ body {
 	margin-left: auto;
 	margin-right: auto;
 	height: 1000px;
-	background-color: #FFFFFF;
+	background-color: #000000;
 }
 /* Navigation */
 header {
@@ -147,8 +147,8 @@ ul li:hover a {
 }
 /* Parallax Section */
 .banner {
-	background-color: #2D9AB7;
-	background-image: url(../images/parallax.png);
+	background-color: #000000;
+	background-image: url("/Aqwa/Images/Logo.png");
 	height: 400px;
 	background-attachment: fixed;
 	background-size: cover;
@@ -409,7 +409,7 @@ nav ul li {
 	padding-left: 0px;
 	width: 100%;
 	font-size: 18px;
-}
+	}
 .parallax_description {
 	padding-top: 0px;
 	padding-right: 0px;
