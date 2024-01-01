@@ -148,7 +148,7 @@ ul li:hover a {
 /* Parallax Section */
 .banner {
 	background-color: #000000;
-	background-image: url("/Aqwa/Images/Logo.png");
+	background-image: url("images/Logo.png");
 	height: 400px;
 	background-attachment: fixed;
 	background-size: cover;
