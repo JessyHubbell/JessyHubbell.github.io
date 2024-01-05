@@ -110,7 +110,7 @@ ul li:hover a {
 }
 /* Stats Gallery */
 .stats {
-	color: #717070;
+	color: #000000;
 	margin-bottom: 5px;
 }
 .gallery {
@@ -249,6 +249,14 @@ footer .footer_column p {
 	background-color: #B3B3B3;
 	padding-top: 60px;
 	padding-bottom: 60PX;
+	margin-bottom: 0px;
+	background-image: url(../images/pattern.png);
+	background-repeat: repeat;
+}
+.contact {
+	background-color: #278B0E;
+	padding-top: 30px;
+	padding-bottom: 30PX;
 	margin-bottom: 0px;
 	background-image: url(../images/pattern.png);
 	background-repeat: repeat;
