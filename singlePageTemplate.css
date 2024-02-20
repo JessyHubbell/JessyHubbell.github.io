@@ -80,6 +80,7 @@ ul li:hover a {
 	background-color: #B3B3B3;
 	padding-top: 150px;
 	padding-bottom: 150px;
+	opacity: .4;
 }
 .light {
 	font-weight: bold;
