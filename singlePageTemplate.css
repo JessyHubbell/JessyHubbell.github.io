@@ -158,6 +158,14 @@ ul li:hover a {
 	background-size: cover;
 	background-repeat: no-repeat;
 }
+.dividebanner {
+	background-color: #000000;
+	background-image: url("images/aqwaparallax.png");
+	height: 100px;
+	background-attachment: fixed;
+	background-size: cover;
+	background-repeat: no-repeat;
+}
 .parallax {
 	color: #FFFFFF;
 	text-align: right;
