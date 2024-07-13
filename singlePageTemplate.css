@@ -80,7 +80,6 @@ ul li:hover a {
 	background-color: #B3B3B3;
 	padding-top: 20px;
 	padding-bottom: 20px;
-	text-align: center;
 	width: 100;
 	height: 0;
 	padding-bottom: 56%;
@@ -88,14 +87,15 @@ ul li:hover a {
 }
 .responsive{
 	width: 100%;
-	height: 0;
-	padding-bottom: 56%;
+	height: 0px auto;
+	padding-bottom: 56.25%;
 	position: relative;
 	}
 .responsive iframe{
 	position: absolute;
 	width: 100%;
-	height: 100;
+	height: 100%;
+	padding-left: 25%;
 	}
 .light {
 	font-weight: bold;
