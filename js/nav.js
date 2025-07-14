@@ -204,7 +204,7 @@ if (windowHotspot) {
               <h2 class="hero_header">Arcane Quandaries <span class="light">For Archibald </span></h2>
               <br>
               <br>
-                <center><form action="https://public.herotofu.com/v1/d8742f00-a8f9-11ee-ae0b-a7e011fe96d3" method="post" accept-charset="UTF-8">
+                <center><form action="https://public.herotofu.com/v1/a8c49130-46ee-11ef-91e4-b1221c7356b8" method="post" accept-charset="UTF-8">
                   <div>
                     <label for="name">Your Name:</label>
                     <input style="width:200px;" name="Name" id="name" type="text" required />
