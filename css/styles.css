@@ -1,34 +1,42 @@
 /* CSS Document */
 
 /*base*/
-html{
-	margin-top: 0px;
-	margin-bottom: 0px;
-	margin-left: 0px;
-	margin-right: 0px;
-	background-color: black;
-	padding-top: 0px;
-	padding-bottom: 0px;
-	padding-left: 0px;
-	padding-right: 0px;
-    flex-direction: column;
+html, body {
+  margin: 0;
+  padding: 0;
+  background: black; /* Bars outside the viewport */
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
-body{
-	
-	margin-top: 0px;
-	margin-bottom: 0px;
-	margin-left: 0px;
-	margin-right: 0px;
-	padding-top: 0px;
-	padding-bottom: 0px;
-	padding-left: 0px;
-	padding-right: 0px;
-    flex-direction: column;
+.accordion-content {
+  display: none;
+  padding: 0.5em;
+}
+
+.accordion-content.open {
+  display: block;
 }
 .answer {
   margin-top: 0; 
   margin-bottom: 10px; 
   padding: 5px; 
+}
+.aspect-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    background: black;
+}
+
+.aspect-content {
+  position: relative; /* <-- Required for absolutely positioned children */
+  width: 100vw;
+  height: 100vh;
+  background-color: transparent;
+  overflow: hidden;
 }
 /*Buttons*/
 button {
@@ -59,6 +67,437 @@ button:hover {
     margin: 0; 
     overflow-x: auto; 
 }
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: block;
+    background: transparent;
+}
+.steam-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    pointer-events: none;
+    z-index: 10;
+}
+.logo-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 20;
+    pointer-events: auto;
+    opacity: 0;
+    width: 100%;      /* Ensures scaling reference stays correct */
+    height: 100%;     /* Same here */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeInAndOutLogo 6s ease-in-out 2s forwards;
+}
+.site-logo {
+    width: 40%; /* Scales relative to .aspect-content */
+    max-width: 600px;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    transition: transform 0.3s ease;
+}
+
+/* Fade in effect */
+@keyframes fadeInAndOutLogo {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.95);
+  }
+  10% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  80% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+}
+/*Navigation*/
+/* === Bookcase Navigation === */
+.bookcase-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 30;
+  pointer-events: none;
+}
+
+.bookcase-hotspot {
+  position: absolute;
+  top: 47%;
+  left: 16%;
+  width: 12%;
+  height: 20%;
+  /*background-color: rgba(255, 0, 0, 0.2);*/
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.bookcase-hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill; /* forces exact scaling even if it stretches */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 25;
+  pointer-events: none;
+}
+
+/*------------------------------------------------SKULL--------------------------------------------------*/
+.skull-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 30;
+  pointer-events: none;
+}
+
+.skull-hotspot {
+  position: absolute;
+  top: 55%;
+  left: 4%;
+  width: 3%;
+  height: 5%;
+  /*background-color: rgba(255, 0, 0, 0.2);*/
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.skull-hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: fill;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 25;
+  pointer-events: none;
+}
+#skull-tabs {
+  font-family: 'Georgia', serif;
+}
+/*Tab menu*/
+#skull-tabs .ui-tabs-nav {
+  background: #000000;
+  border: none;
+  padding: 0.3em;
+  border-radius: 8px;
+}
+/*Text on Tabs*/
+#skull-tabs .ui-tabs-tab a {
+  color: #fff;
+}
+/*Content Panel*/
+#skull-tabs .ui-tabs-panel {
+  padding: 1em;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  color: white;
+}
+/* Normal tab style */
+#skull-tabs .ui-tabs-nav li {
+  background: #222;
+  border: 1px solid #444;
+  border-radius: 6px 6px 0 0;
+  margin-right: 4px;
+  transition: background 0.3s ease;
+}
+
+/* Hover effect */
+#skull-tabs .ui-tabs-nav li:hover {
+  background: #333;
+}
+
+/* Active tab - currently selected */
+#skull-tabs .ui-tabs-nav .ui-tabs-active {
+  background: #555; /* Change this to your desired active color */
+  border-color: #666;
+  box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Optional: active tab link text */
+#skull-tabs .ui-tabs-nav .ui-tabs-active a {
+  color: #ffd700; /* golden text or whatever fits your theme */
+  font-weight: bold;
+}
+/*------------------------------------------------Flower--------------------------------------------------*/
+.flower-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 30;
+  pointer-events: none;
+}
+
+.flower-hotspot {
+  position: absolute;
+  top: 73%;
+  left: 11%;
+  width: 3%;
+  height: 8%;
+  /*background-color: rgba(255, 0, 0, 0.2);*/
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.flower-hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: fill;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 25;
+  pointer-events: none;
+}
+#flower-tabs {
+  font-family: 'Georgia', serif;
+}
+/*Tab menu*/
+#flower-tabs .ui-tabs-nav {
+  background: #000000;
+  border: none;
+  padding: 0.3em;
+  border-radius: 8px;
+}
+/*Text on Tabs*/
+#flower-tabs .ui-tabs-tab a {
+  color: #fff;
+}
+/*Content Panel*/
+#flower-tabs .ui-tabs-panel {
+  padding: 1em;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  color: white;
+}
+/* Normal tab style */
+#flower-tabs .ui-tabs-nav li {
+  background: #222;
+  border: 1px solid #444;
+  border-radius: 6px 6px 0 0;
+  margin-right: 4px;
+  transition: background 0.3s ease;
+}
+
+/* Hover effect */
+#flower-tabs .ui-tabs-nav li:hover {
+  background: #333;
+}
+
+/* Active tab - currently selected */
+#flower-tabs .ui-tabs-nav .ui-tabs-active {
+  background: #555; /* Change this to your desired active color */
+  border-color: #666;
+  box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Optional: active tab link text */
+#flower-tabs .ui-tabs-nav .ui-tabs-active a {
+  color: #ffd700; /* golden text or whatever fits your theme */
+  font-weight: bold;
+}
+/*------------------------------------------------Crow--------------------------------------------------*/
+.crow-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 30;
+  pointer-events: none;
+}
+
+.crow-hotspot {
+  position: absolute;
+  top: 46%;
+  left: 36%;
+  width: 5%;
+  height: 5%;
+  /*background-color: rgba(255, 0, 0, 0.2);*/
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.crow-hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: fill;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 25;
+  pointer-events: none;
+}
+/*------------------------------------------------FirePlace--------------------------------------------------*/
+.fireplace-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 30;
+  pointer-events: none;
+}
+
+.fireplace-hotspot {
+  position: absolute;
+  top: 50%;
+  left: 46%;
+  width: 12%;
+  height: 13%;
+  /*background-color: rgba(255, 0, 0, 0.2);*/
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.fireplace-hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: fill;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 25;
+  pointer-events: none;
+}
+
+/*------------------------------------------------Sigil--------------------------------------------------*/
+.sigil-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 30;
+  pointer-events: none;
+}
+
+.sigil-hotspot {
+  position: absolute;
+  top: 29%;
+  left: 62%;
+  width: 9%;
+  height: 15%;
+  /*background-color: rgba(255, 0, 0, 0.2);*/
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.sigil-hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: fill;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 25;
+  pointer-events: none;
+}
+/*------------------------------------------------Boots--------------------------------------------------*/
+.boots-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 30;
+  pointer-events: none;
+}
+
+.boots-hotspot {
+  position: absolute;
+  top: 80%;
+  left: 90%;
+  width: 4%;
+  height: 7%;
+  /*background-color: rgba(255, 0, 0, 0.2);*/
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.boots-hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: fill;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 25;
+  pointer-events: none;
+}
+/*------------------------------------------------Window--------------------------------------------------*/
+.window-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 30;
+  pointer-events: none;
+}
+
+.window-hotspot {
+  position: absolute;
+  top: 24%;
+  left: 84%;
+  width: 8%;
+  height: 35%;
+  /*background-color: rgba(255, 0, 0, 0.2);*/
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.window-hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: fill;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 25;
+  pointer-events: none;
+}
+
 div.container{
 	text-align: center;
 	}
@@ -141,24 +580,33 @@ div.fpadding{
 	padding-right: 0px;
 }
 /*parrallax*/
-.parrallax 
-	{
-	margin-top: 0px;
-	margin-bottom: 0px;
-	margin-left: 0px;
-	margin-right: 0px;
-	background-image: url("../img/aqwaparallax.png");
-	height: 100vh;
-	width: 100%;
-	background-attachment: fixed;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size:cover;
-	padding-top: 0px;
-	padding-bottom: 0px;
-	padding-left: 5px;
-	padding-right: 5px;
-	}
+.viewport {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center it */
+  aspect-ratio: 16 / 9;
+  width: 100vw;
+  max-height: 100vh;
+  background: black;
+  overflow: hidden;
+}
+
+.parrallax-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.parrallax-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 0;
+}
 /*footer*/
 footer{
 	margin-top: 0px;
@@ -189,9 +637,11 @@ footer{
     font-weight: bold;
     text-align: justify;
 }
+/*------------------------------------------------Quandaries--------------------------------------------------*/
 /* General form styling */
 .hero_header {
-	color: #FFFFFF;
+	color: #000000;
+    font-size: 4vh;
 	text-align: center;
 	margin-top: 0px;
 	margin-right: 0px;
@@ -201,7 +651,6 @@ footer{
 }
 /* Hero Section */
 .hero {
-	background-color: #B3B3B3;
 	padding-top: 20px;
 	padding-bottom: 20px;
 	width: 50%;
@@ -352,80 +801,6 @@ ol, ol li {
 .main{
     height: auto;
 }
- /* NaviBar*/
-.navibar {
-  	font-family: Cambria, "Hoefler Text", "Liberation Serif", Times, "Times New Roman", "serif";
-	text-align: center;  
-	overflow: hidden;
-  	background-color: #333;
-	width: 100%
-	}
-
-/*NaviBar Links*/
-.navibar a {
-  	text-align: center;
-	float: left;
-  	font-size: 18px;
-  	color: grey;
-  	padding: 16px 18px;
-	}
-
-/* Blue background on Hover */
-.navibar a:hover, .dropdown:hover .dropbtn {
-  	background-color: #4CAF50;
-	}
-
-/* The DDowncontainer */
-.dropdown {
-  	float: left;
-  	overflow: hidden;
-	width: 100%;
-	}
-
-/* DDown */
-.dropdown .dropbtn {
-  	font-size: 18px;
-  	color: white;
-  	padding: 16px 18px;
-	background-color: #333;
-  	font-family: Cambria, "Hoefler Text", "Liberation Serif", Times, "Times New Roman", "serif";
-	border: none;
-	}
-
-/* DDown items */
-.dropdown-content {
-  	display: none;
-  	position: absolute;
-  	background-color: #D0D0D0;
-  	min-width: 100px;
-  	box-shadow: 4px 10px 18px 6px rgba(0,0,0,0);
-  	z-index: 1;
-	width: 95%;
-	border-color: black;
-	border-style: solid;
-	border-width: thin;
-	}
-
-/* Links inside the dropdown */
-.dropdown-content a {
-  	float: none;
-  	color: black;
-  	padding: 14px 18px;
-  	text-decoration: none;
-  	display: block;
-  	text-align: left;
-	}
-
-/* Grey background to links on hover */
-.dropdown-content a:hover {
-  	background-color: #4CAF50;
-	}
-
-/* Show on hover 
-.dropdown:hover .dropdown-content {
-  	display: block;
-	} */
-
 p {
 	font-family: Constantia, "Lucida Bright", "DejaVu Serif", Georgia, "serif";
 	font-size: 18;
@@ -433,66 +808,83 @@ p {
 	padding: 15px 15px 15px 15px;
 	}
 
-/*Table*/
-table {
-    background: #D0D0D0;
-    width: 100%; 
-    table-layout: auto;
-    margin: 0; 
-    border-collapse: collapse; 
-}
-table.constrain{
-	table-layout: fixed;
-	overflow: hidden;
-	}
-td.single{
-	background-color: #333;
-}
-/* Stylize the first row (header) of the specific table with class .speedrun-table */
-.speedrun-table th {
-    background-color: #4CAF50; 
-    color: white; 
-    font-size: 18px; 
-    text-align: center; 
-    padding: 15px; 
-    border: 2px solid #333; 
+
+/*------------------------------------------------MagicPanel PopUps--------------------------------------------------*/
+/* Magic Panel Container */
+.magic-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none; /* Prevent interaction unless visible */
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform-origin: var(--origin-x) var(--origin-y);
+  transition: transform 0.4s ease, opacity 0.4s ease;
+  opacity: 0;
 }
 
-/* Optional: Add bold text to the header for emphasis */
-.speedrun-table th, .speedrun-table td {
-    font-weight: bold;
-    width: 25%;
-    text-align: center;
+/* When visible, allow interaction */
+.magic-panel.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
 }
 
-/* Stylize the first row of the table (even if it's a data row) */
-.speedrun-table tr:first-child {
-    background-color: #4CAF50;
-    color: white; 
-    font-weight: bold; 
+/* When hidden, shrink and fade */
+.magic-panel.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.2);
 }
 
-/* Adjust table rows for better readability */
-.speedrun-table tr:nth-child(even) {
-    background-color: #f2f2f2; 
+/* The inner magical content */
+.magic-content {
+  background: url('../img/paper.jpg') no-repeat center center;
+  background-size: cover;
+  border: 3px solid gold;
+  padding: 20px;
+  border-radius: 12px;
+width: min(70vw, 800px);
+height: min(60vh, 600px);
+min-width: 400px;
+min-height: 300px;
+  overflow-y: auto;      /* Allow scroll if needed */
+  overflow-x: hidden;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
+  position: relative;    /* Required for close button */
 }
 
-.speedrun-table tr:nth-child(odd) {
-    background-color: #333; 
+/* Close button */
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  background: transparent;
+  color: white;
+  border: none;
+  cursor: pointer;
+  z-index: 10000;
 }
-/* Alternating text colors for rows after the header */
-.speedrun-table tr:nth-child(2n+2) td {
-    color: #333; 
+ 
+    
+
+
+/*------------------------------------------------Media Queries--------------------------------------------------*/
+@media screen and (max-aspect-ratio: 16/9) {
+    .aspect-content {
+        width: auto;
+        height: 100vh;
+    }
 }
 
-.speedrun-table tr:nth-child(2n+3) td {
-    color: #fff; 
+@media screen and (min-aspect-ratio: 16/9) {
+    .aspect-content {
+        width: 100vw;
+        height: auto;
+    }
 }
-/* Hover effect for rows */
-.speedrun-table tr:hover {
-    background-color: #ddd; 
-}
-/*UI for Tabs Panel */
-.ui-tabs-nav {
-    background-color: green;
-    border: none;

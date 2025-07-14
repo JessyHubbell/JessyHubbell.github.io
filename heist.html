@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Maze Wizard Game (First-Person)</title>
+  <style>
+    canvas { background: #111; display: block; margin: 0 auto; }
+    body { text-align: center; color: white; font-family: sans-serif; }
+    #info { margin: 10px; }
+    #minimap {
+      position: absolute;
+      top: 100px;
+      right: 110px;
+      border: 2px solid white;
+      background: rgba(0, 0, 0, 0.5);
+    }
+  </style>
+</head>
+<body>
+  <h1>Jeffry's Heist</h1>
+  <canvas id="gameCanvas" width="640" height="480"></canvas>   
+  <canvas id="minimap" width="160" height="160"></canvas>
+  <canvas id="audiometer" width="160" height="160"></canvas>
+  <canvas id="score" width="160" height="160"></canvas>
+  <script>
+//***************************************************************************************************************************
+//Main Componenent
+//***************************************************************************************************************************    
+      
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+
+//***************************************************************************************************************************
+//Maze Generate
+//***************************************************************************************************************************
+const TILE_SIZE = 40;
+const ROWS = 16;
+const COLS = 16;
+const FOV = Math.PI / 3;
+const RAYS = 120;
+const MAX_DEPTH = 300;
+function createEmptyMaze(rows, cols) {
+      return Array.from({ length: rows }, () => Array(cols).fill('#'));
+    }
+function generateMaze(rows, cols) {
+  const maze = Array.from({ length: rows }, () => Array(cols).fill('#'));
+  const visited = Array.from({ length: rows }, () => Array(cols).fill(false));
+
+  function carve(x, y) {
+    visited[y][x] = true;
+    maze[y][x] = ' ';
+
+    const directions = [
+      [0, -2], [2, 0], [0, 2], [-2, 0]
+    ].sort(() => Math.random() - 0.5);
+
+    for (const [dx, dy] of directions) {
+      const nx = x + dx;
+      const ny = y + dy;
+      if (
+        nx > 0 && nx < cols - 1 &&
+        ny > 0 && ny < rows - 1 &&
+        !visited[ny][nx]
+      ) {
+        maze[y + dy / 2][x + dx / 2] = ' ';
+        carve(nx, ny);
+      }
+    }
+  }
+
+  carve(1, 1);
+  return maze;
+}
+
+    let maze = generateMaze(ROWS, COLS);
+//walls of map
+    function containsBlock(x, y) {
+      const gridX = Math.floor(x / TILE_SIZE);
+      const gridY = Math.floor(y / TILE_SIZE);
+      return maze[gridY]?.[gridX] === '#';
+    }
+
+//    // Find farthest cell from (1,1) for treasure
+//    function bfsFarthestCell(startX, startY) {
+//      const queue = [[startX, startY]];
+//      const visited = Array.from({ length: ROWS }, () => Array(COLS).fill(false));
+//      visited[startY][startX] = true;
+//      let last = [startX, startY];
+//
+//      while (queue.length > 0) {
+//        const [x, y] = queue.shift();
+//        last = [x, y];
+//
+//        for (const [dx, dy] of [[0,1],[1,0],[0,-1],[-1,0]]) {
+//          const nx = x + dx;
+//          const ny = y + dy;
+//          if (nx >= 0 && nx < COLS && ny >= 0 && ny < ROWS &&
+//              !visited[ny][nx] && maze[ny][nx] === ' ') {
+//            visited[ny][nx] = true;
+//            queue.push([nx, ny]);
+//          }
+//        }
+//      }
+//
+//    return last;
+//    }
+
+function getRandomEmptyCell() {
+  const emptyCells = [];
+  for (let y = 0; y < ROWS; y++) {
+    for (let x = 0; x < COLS; x++) {
+      if (maze[y][x] === ' ' && !(x === 1 && y === 1)) { // exclude player start
+        emptyCells.push([x, y]);
+      }
+    }
+  }
+  return emptyCells[Math.floor(Math.random() * emptyCells.length)];
+}
+//***************************************************************************************************************************
+//CastRays
+//***************************************************************************************************************************
+function castRays() {
+      for (let i = 0; i < RAYS; i++) {
+        const rayAngle = player.angle - FOV / 2 + FOV * (i / RAYS);
+        let dist = 0;
+
+        let hitX = 0;
+        let hitY = 0;
+
+        while (dist < MAX_DEPTH) {
+          const targetX = player.x + Math.cos(rayAngle) * dist;
+          const targetY = player.y + Math.sin(rayAngle) * dist;
+          if (containsBlock(targetX, targetY)) {
+            hitX = targetX;
+            hitY = targetY;
+            break;
+          }
+          dist += 1;
+        }
+
+        const brightness = 255 - dist * 0.5;
+       ctx.fillStyle = 'rgb(' + brightness + ',' + brightness + ',' + brightness + ')';
+        const height = 30000 / (dist || 1);
+        ctx.fillRect(i * (canvas.width / RAYS), (canvas.height - height) / 2, canvas.width / RAYS + 1, height);
+
+//****************************************************************************************************************
+        // draw water in view
+        const waterdx = (waterX * TILE_SIZE + TILE_SIZE / 2) - player.x;
+        const waterdy = (waterY * TILE_SIZE + TILE_SIZE / 2) - player.y;
+        let waterAngle = Math.atan2(waterdy, waterdx) - player.angle;
+while (waterAngle < -Math.PI) waterAngle += Math.PI * 2;
+while (waterAngle > Math.PI) waterAngle -= Math.PI * 2;
+        const waterDist = Math.hypot(waterdx, waterdy);
+if (
+  Math.abs(waterAngle) < FOV / 2 &&
+  hasLineOfSight(player.x, player.y, waterX * TILE_SIZE + TILE_SIZE / 2, waterY * TILE_SIZE + TILE_SIZE / 2)
+) {
+  const screenX = (0.5 + waterAngle / FOV) * canvas.width;
+  const waterHeight = 30000 / (waterDist || 1);
+  ctx.fillStyle = 'blue';
+  ctx.fillRect(screenX - 5, (canvas.height - waterHeight) / 2, 10, waterHeight);
+}  
+      // draw treasure in view
+        const tdx = (treasureX * TILE_SIZE + TILE_SIZE / 2) - player.x;
+        const tdy = (treasureY * TILE_SIZE + TILE_SIZE / 2) - player.y;
+        let treasureAngle = Math.atan2(tdy, tdx) - player.angle;
+while (treasureAngle < -Math.PI) treasureAngle += Math.PI * 2;
+while (treasureAngle > Math.PI) treasureAngle -= Math.PI * 2;
+        const treasureDist = Math.hypot(tdx, tdy);
+if (
+  Math.abs(treasureAngle) < FOV / 2 &&
+  hasLineOfSight(player.x, player.y, treasureX * TILE_SIZE + TILE_SIZE / 2, treasureY * TILE_SIZE + TILE_SIZE / 2)
+) {
+  const screenX = (0.5 + treasureAngle / FOV) * canvas.width;
+  const treasureHeight = 30000 / (treasureDist || 1);
+  ctx.fillStyle = 'gold';
+  ctx.fillRect(screenX - 5, (canvas.height - treasureHeight) / 2, 10, treasureHeight);
+}
+
+        // draw wizard in view
+        const wdx = wizard.x - player.x;
+        const wdy = wizard.y - player.y;
+        let wizardAngle = Math.atan2(wdy, wdx) - player.angle;
+while (wizardAngle < -Math.PI) wizardAngle += Math.PI * 2;
+while (wizardAngle > Math.PI) wizardAngle -= Math.PI * 2;
+        const wizardDist = Math.hypot(wdx, wdy);
+if (
+  Math.abs(wizardAngle) < FOV / 2 &&
+  hasLineOfSight(player.x, player.y, wizard.x, wizard.y)
+) {
+  const screenX = (0.5 + wizardAngle / FOV) * canvas.width;
+  const wizardHeight = 30000 / (wizardDist || 1);
+  ctx.fillStyle = wizard.stunned ? 'blue' : 'red'; // blue when stunned
+  ctx.fillRect(screenX - 5, (canvas.height - wizardHeight) / 2, 10, wizardHeight);
+}
+      }
+    }
+//***************************************************************************************************************************
+//MiniMap
+//***************************************************************************************************************************      
+const minimap = document.getElementById('minimap');
+const miniCtx = minimap.getContext('2d');
+function drawMinimap() {
+      miniCtx.clearRect(0, 0, minimap.width, minimap.height);
+      const scale = minimap.width / (COLS * TILE_SIZE);
+
+      for (let y = 0; y < ROWS; y++) {
+        for (let x = 0; x < COLS; x++) {
+          if (maze[y][x] === '#') {
+            miniCtx.fillStyle = 'gray';
+            miniCtx.fillRect(x * TILE_SIZE * scale, y * TILE_SIZE * scale, TILE_SIZE * scale, TILE_SIZE * scale);
+          }
+        }
+      }
+
+      miniCtx.fillStyle = 'white';
+      miniCtx.fillRect(player.x * scale - 2, player.y * scale - 2, 4, 4);
+      miniCtx.fillStyle = 'gold';
+      miniCtx.fillRect(treasureX * TILE_SIZE * scale + TILE_SIZE/2 * scale - 2, treasureY * TILE_SIZE * scale + TILE_SIZE/2 * scale - 2, 4, 4);
+      miniCtx.fillStyle = 'blue';
+      miniCtx.fillRect(waterX * TILE_SIZE * scale + TILE_SIZE/2 * scale - 2, waterY * TILE_SIZE * scale + TILE_SIZE/2 * scale - 2, 4, 4);
+      miniCtx.fillStyle = 'red';
+      miniCtx.fillRect(wizard.x * scale - 2, wizard.y * scale - 2, 4, 4);
+    }
+
+//***************************************************************************************************************************
+//AudioMeter
+//***************************************************************************************************************************
+      
+const audioMeter = document.getElementById('audiometer');
+const audioCtx = audioMeter.getContext('2d');
+let meterValue = 0;
+let spaceBarPressed = false;
+
+function drawAudioMeter() {
+  audioCtx.clearRect(0, 0, audioMeter.width, audioMeter.height);
+
+  // Draw background
+  audioCtx.fillStyle = 'gray';
+  audioCtx.fillRect(30, 10, 40, 140);
+
+  // Draw meter (green when space is pressed)
+  const height = (meterValue / 100) * 140;
+  audioCtx.fillStyle = meterValue > 0 ? 'lime' : 'black';
+  audioCtx.fillRect(30, 150 - height, 40, height);
+
+  // Draw text
+  audioCtx.fillStyle = 'white';
+  audioCtx.font = '14px sans-serif';
+  audioCtx.fillText(`${meterValue}%`, 80, 80);
+}
+
+// Handle key down and up for space
+document.addEventListener('keydown', e => {
+  if (e.code === 'Space') {
+    spaceBarPressed = true;
+    meterValue = 100;
+  }
+});
+document.addEventListener('keyup', e => {
+  if (e.code === 'Space') {
+    spaceBarPressed = false;
+  }
+});
+
+// Periodically degrade the audio meter if space is not pressed
+setInterval(() => {
+  if (!spaceBarPressed && meterValue > 0) {
+    meterValue -= 1;  // Decrease meter by 1% every interval
+    if (meterValue < 0) meterValue = 0;  // Prevent negative values
+  }
+  drawAudioMeter();
+}, 1000); // Update every 100ms (0.1 seconds)
+//***************************************************************************************************************************
+//Score
+//***************************************************************************************************************************
+const score = document.getElementById('score');
+const scoreCtx = score.getContext('2d');
+let totalScore = 0;
+
+function drawScore() {
+    scoreCtx.clearRect(0, 0, score.width, score.height);
+
+    // Background
+    scoreCtx.fillStyle = 'gray';
+    scoreCtx.fillRect(0, 0, score.width, score.height);
+
+    // Score text
+    scoreCtx.fillStyle = 'white';
+    scoreCtx.font = '20px monospace';
+    scoreCtx.textAlign = 'left';
+    scoreCtx.textBaseline = 'top';
+    scoreCtx.fillText('Score: ' + totalScore, 10, 10);
+}
+//***************************************************************************************************************************
+//Player
+//***************************************************************************************************************************
+const player = {
+      x: 0,
+      y: 0,
+      angle: 0,
+      speed: 2
+    };
+    let wetStep = 0;
+    let lootStep = 0;
+      
+    // Place player at (1, 1)
+    maze[1][1] = 'P';
+    function updatePlayer() {
+      let dx = 0, dy = 0;
+      const now = Date.now();
+        
+      if (keys['w']) {
+        dx += Math.cos(player.angle) * player.speed;
+        dy += Math.sin(player.angle) * player.speed;
+        if(waterTriggered && now - wetStep > 500){
+            meterValue = Math.min(100, meterValue + 1);
+            wetStep = now;
+            console.log('making noise: wetstep' )
+        }else if(treasureTriggered && now - lootStep > 500){
+            meterValue = Math.min(100, meterValue + 1);
+            lootStep = now;
+            console.log('making noise: lootstep' )
+        }
+      }
+      if (keys['s']) {
+        dx -= Math.cos(player.angle) * player.speed;
+        dy -= Math.sin(player.angle) * player.speed;
+        if(waterTriggered && now - wetStep > 500){
+            meterValue = Math.min(100, meterValue + 1);
+            wetStep = now;
+            console.log('making noise: wetstep' )
+        }else if(treasureTriggered && now - lootStep > 500){
+            meterValue = Math.min(100, meterValue + 1);
+            lootStep = now;
+            console.log('making noise: lootstep' )
+        }
+      }
+      if (keys['a']) player.angle -= 0.05;
+      if (keys['d']) player.angle += 0.05;
+
+      if (!containsBlock(player.x + dx, player.y)) player.x += dx;
+      if (!containsBlock(player.x, player.y + dy)) player.y += dy;
+    }
+//***************************************************************************************************************************
+//Wizard
+//***************************************************************************************************************************      
+const wizard = {
+  x: 5.5 * TILE_SIZE,
+  y: 5.5 * TILE_SIZE,
+  angle: 0,
+  speed: 1.5,
+  state: 'wander', // start in wander mode
+  path: [],
+};
+const wizardWanderImage = new Image();
+wizardWanderImage.src = 'img/wizardwandering.png';
+
+const wizardChaseImage = new Image();
+wizardChaseImage.src = 'img/wizardchasing.png';
+const wizardSprite = {
+  image: wizardWanderImage, // default
+  frame: 0,
+  frameTimer: 0,
+  frameMax: 8, // 8 frames in a row
+  frameWidth: 64,
+  frameHeight: 64
+};
+const directionMap = {
+  'down': 0,
+  'right': 1,
+  'left': 2,
+  'up': 3
+};
+const sy = directionMap[wizard.facing] * 64;
+let wizardPath = [];
+let wizardPathIndex = 0;
+let pathfindingCooldown = 0;
+let wizardStartDelay = 60;
+let wizardLastX = wizard.x;
+let wizardLastY = wizard.y;
+let wizardStuckCounter = 0;
+let wizardRandomMoveTimer = 0;
+let wizardRandomAngle = 0;
+function wanderWizard() {
+      // Randomly change angle sometimes
+      if (Math.random() < 0.02) {
+        wizard.angle = Math.random() * Math.PI * 2;
+      }
+
+      // Try to move
+      const dx = Math.cos(wizard.angle) * wizard.speed;
+      const dy = Math.sin(wizard.angle) * wizard.speed;
+      const newX = wizard.x + dx;
+      const newY = wizard.y + dy;
+
+      if (!containsBlock(newX, newY)) {
+        wizard.x = newX;
+        wizard.y = newY;
+      } else {
+        // Bounce off walls
+        wizard.angle += Math.PI / 2;
+      }
+    }
+function hasLineOfSight(x1, y1, x2, y2) {
+      const dx = x2 - x1;
+      const dy = y2 - y1;
+      const distance = Math.hypot(dx, dy);
+      const steps = Math.ceil(distance / 2); // Adjust step size for precision
+      const stepX = dx / steps;
+      const stepY = dy / steps;
+
+      for (let i = 0; i < steps; i++) {
+        const testX = x1 + stepX * i;
+        const testY = y1 + stepY * i;
+        if (containsBlock(testX, testY)) {
+          return false;
+        }
+      }
+      return true;
+    }
+function drawWizard() {
+  wizardSprite.image = wizard.state === 'chase' ? wizardChaseImage : wizardWanderImage;
+
+  const sx = wizardSprite.frame * wizardSprite.frameWidth;
+  const sy = 0; // top row only
+
+  ctx.drawImage(
+    wizardSprite.image,
+    sx, sy,
+    wizardSprite.frameWidth, wizardSprite.frameHeight, // source
+    wizard.x - TILE_SIZE / 2,
+    wizard.y - TILE_SIZE / 2,
+    TILE_SIZE, TILE_SIZE // destination size (rescale if needed)
+  );
+
+  // Animate frame
+  wizardSprite.frameTimer++;
+  if (wizardSprite.frameTimer >= 10) {
+    wizardSprite.frame = (wizardSprite.frame + 1) % wizardSprite.frameMax;
+    wizardSprite.frameTimer = 0;
+  }
+}
+function updateWizard() {
+      if (wizardStartDelay > 0) {
+        wizardStartDelay--;
+        return;
+      }
+
+     if (wizard.stunned) {
+      wizard.stunTimer--;
+      if (wizard.stunTimer <= 0) {
+        wizard.stunned = false;
+        wizard.state = 'wander';
+      }
+      return;
+    }
+
+      // Check for spacebar press to initiate chase when audio reaches 100
+      if (wizard.state === 'wander' && meterValue >= 100) {
+        wizard.state = 'chase';
+        console.log("Wizard started chasing due to audio reaching 100%!");
+      }
+
+      if (wizard.state === 'wander') {
+        wanderWizard();
+
+        // Check line of sight to player
+        const dx = player.x - wizard.x;
+        const dy = player.y - wizard.y;
+        const distance = Math.hypot(dx, dy);
+        const steps = distance / TILE_SIZE;
+        let clearSight = true;
+
+        for (let i = 1; i < steps; i++) {
+          const checkX = wizard.x + (dx / steps) * i;
+          const checkY = wizard.y + (dy / steps) * i;
+          if (containsBlock(checkX, checkY)) {
+            clearSight = false;
+            break;
+          }
+        }
+
+        // Trigger chase if wizard sees the player
+        if (clearSight) {
+          wizard.state = 'chase';
+          console.log("Wizard started chasing due to line of sight!");
+        }
+
+      } else if (wizard.state === 'chase') {
+        // Calculate new path to chase player every 15 frames
+        if (pathfindingCooldown <= 0) {
+          const startX = Math.floor(wizard.x / TILE_SIZE);
+          const startY = Math.floor(wizard.y / TILE_SIZE);
+          const targetX = Math.floor(player.x / TILE_SIZE);
+          const targetY = Math.floor(player.y / TILE_SIZE);
+          const path = findPathBFS(startX, startY, targetX, targetY);
+          if (path && path.length > 1) {
+            wizardPath = path;
+            wizardPathIndex = 1;
+          }
+          pathfindingCooldown = 15; // update path every 15 frames
+        } else {
+          pathfindingCooldown--;
+        }
+
+        // Move along path
+        if (wizardPath.length > wizardPathIndex) {
+          const [tx, ty] = wizardPath[wizardPathIndex];
+          const targetX = tx * TILE_SIZE + TILE_SIZE / 2;
+          const targetY = ty * TILE_SIZE + TILE_SIZE / 2;
+
+          const dx = targetX - wizard.x;
+          const dy = targetY - wizard.y;
+          const dist = Math.hypot(dx, dy);
+
+          if (dist < 1) {
+            wizard.x = targetX;
+            wizard.y = targetY;
+            wizardPathIndex++;
+          } else {
+            const angle = Math.atan2(dy, dx);
+            const moveX = Math.cos(angle) * wizard.speed;
+            const moveY = Math.sin(angle) * wizard.speed;
+
+            if (!containsBlock(wizard.x + moveX, wizard.y)) wizard.x += moveX;
+            if (!containsBlock(wizard.x, wizard.y + moveY)) wizard.y += moveY;
+          }
+        }
+      } else if (wizard.state === 'wander') {
+        // Wander randomly (add randomness to movement)
+        if (wizardRandomMoveTimer <= 0) {
+          wizardRandomAngle = Math.random() * 2 * Math.PI; // random angle to wander
+          wizardRandomMoveTimer = Math.random() * 60 + 30; // wait a random time before changing direction
+        } else {
+          wizardRandomMoveTimer--;
+        }
+
+        // Move in the random direction
+        const moveX = Math.cos(wizardRandomAngle) * wizard.speed;
+        const moveY = Math.sin(wizardRandomAngle) * wizard.speed;
+
+        if (!containsBlock(wizard.x + moveX, wizard.y)) wizard.x += moveX;
+        if (!containsBlock(wizard.x, wizard.y + moveY)) wizard.y += moveY;
+      }
+    } 
+
+for (let y = ROWS - 1; y >= 0; y--) {
+      for (let x = COLS - 1; x >= 0; x--) {
+        if (maze[y][x] === ' ') {
+          wizard.x = x * TILE_SIZE + TILE_SIZE / 2;
+          wizard.y = y * TILE_SIZE + TILE_SIZE / 2;
+          break;
+        }
+      }
+      if (wizard.x) break;
+    }
+//Wizard Pathing
+function findPathBFS(startX, startY, targetX, targetY) {
+  const queue = [];
+  const visited = Array.from({ length: ROWS }, () => Array(COLS).fill(false));
+  const cameFrom = Array.from({ length: ROWS }, () => Array(COLS).fill(null));
+
+  queue.push([startX, startY]);
+  visited[startY][startX] = true;
+
+  const directions = [
+    [0, -1], [1, 0], [0, 1], [-1, 0] // up, right, down, left
+  ];
+
+  while (queue.length > 0) {
+    const [x, y] = queue.shift();
+
+    if (x === targetX && y === targetY) {
+      // Reconstruct path
+      const path = [];
+      let curr = [x, y];
+      while (curr) {
+        path.push(curr);
+        curr = cameFrom[curr[1]][curr[0]];
+      }
+      return path.reverse(); // from start to target
+    }
+
+    for (const [dx, dy] of directions) {
+      const nx = x + dx;
+      const ny = y + dy;
+      if (
+        nx >= 0 && nx < COLS &&
+        ny >= 0 && ny < ROWS &&
+        !visited[ny][nx] &&
+        maze[ny][nx] !== '#'
+      ) {
+        visited[ny][nx] = true;
+        cameFrom[ny][nx] = [x, y];
+        queue.push([nx, ny]);
+      }
+    }
+  }
+
+  return null; // No path found
+}      
+//stun listener
+    const keys = {};
+    document.addEventListener('keydown', e => keys[e.key.toLowerCase()] = true);
+    document.addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
+    
+    canvas.addEventListener('click', () => {
+      const dist = Math.hypot(wizard.x - player.x, wizard.y - player.y);
+      if (dist < TILE_SIZE * 1.5) {
+        wizard.stunned = true;
+        wizard.stunTimer = 240;
+      }
+    });
+    
+//***************************************************************************************************************************
+//Treasure
+//***************************************************************************************************************************
+const [tx, ty] = getRandomEmptyCell();
+maze[ty][tx] = 'T';
+let treasureX = 0;
+let treasureY = 0;
+let treasureTriggered = false;
+
+for (let y = 0; y < ROWS; y++) {
+      for (let x = 0; x < COLS; x++) {
+        if (maze[y][x] === 'P') {
+          player.x = x * TILE_SIZE + TILE_SIZE / 2;
+          player.y = y * TILE_SIZE + TILE_SIZE / 2;
+        } else if (maze[y][x] === 'T') {
+          treasureX = x;
+          treasureY = y;
+        }
+      }
+    }
+
+function respawnTreasure() {
+  const playerGridX = Math.floor(player.x / TILE_SIZE);
+  const playerGridY = Math.floor(player.y / TILE_SIZE);
+
+  if (playerGridX === treasureX && playerGridY === treasureY) {
+    // Trigger hazard BEFORE moving treasure
+    if (!treasureTriggered) {
+      meterValue = Math.min(100, meterValue + 1); // clamp
+      treasureTriggered = true;
+      console.log('treasure triggered');
+    }
+
+    totalScore += 10;
+    meterValue += 10;
+    // Clear old treasure
+    for (let y = 0; y < ROWS; y++) {
+      for (let x = 0; x < COLS; x++) {
+        if (maze[y][x] === 'T') {
+          maze[y][x] = ' ';
+        }
+      }
+    }
+
+    // Place new treasure
+    const [tx, ty] = getRandomEmptyCell();
+    maze[ty][tx] = 'T';
+    treasureX = tx;
+    treasureY = ty;
+  }
+}
+//***************************************************************************************************************************
+//Hazards
+//***************************************************************************************************************************
+//Water Hazard     
+const [wx, wy] = getRandomEmptyCell();
+maze[wy][wx] = 'W';
+let waterX = 0;
+let waterY = 0;  
+let waterTriggered = false;
+      
+for (let y = 0; y < ROWS; y++) {
+      for (let x = 0; x < COLS; x++) {
+        if (maze[y][x] === 'P') {
+          player.x = x * TILE_SIZE + TILE_SIZE / 2;
+          player.y = y * TILE_SIZE + TILE_SIZE / 2;
+        } else if (maze[y][x] === 'W') {
+          waterX = x;
+          waterY = y;
+        }
+      }
+    }
+
+function waterHazard() {
+  const playerGridX = Math.floor(player.x / TILE_SIZE);
+  const playerGridY = Math.floor(player.y / TILE_SIZE);
+
+  if (playerGridX === waterX && playerGridY === waterY) {
+    if (!waterTriggered) {
+      meterValue = Math.min(100, meterValue + 10); // clamp to 100
+      waterTriggered = true;
+    }
+  } 
+};
+//***************************************************************************************************************************
+//EndGame win/lose
+//***************************************************************************************************************************
+
+function checkGameEnd() {
+      const playerGridX = Math.floor(player.x / TILE_SIZE);
+      const playerGridY = Math.floor(player.y / TILE_SIZE);
+        //WIN Condition
+//      if (playerGridX === treasureX && playerGridY === treasureY) {
+//        alert("You found the treasure! You win!");
+//        window.location.reload();
+//      }
+        //LoseCondition
+      const dx = player.x - wizard.x;
+      const dy = player.y - wizard.y;
+      if (!wizard.stunned && Math.hypot(dx, dy) < 15) {
+        alert("The wizard caught you! Game over.");
+        window.location.reload();
+      }
+    }
+
+//***************************************************************************************************************************
+//MainLoop
+//***************************************************************************************************************************
+function gameLoop() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      castRays();
+      updatePlayer();
+      updateWizard();
+      drawWizard();
+      drawMinimap();
+      checkGameEnd();
+      drawAudioMeter();
+      respawnTreasure();
+      waterHazard();
+      drawScore();
+      requestAnimationFrame(gameLoop);
+}
+
+gameLoop();
+  </script>
+</body>
+</html>

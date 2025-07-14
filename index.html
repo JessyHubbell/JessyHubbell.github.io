@@ -1,228 +1,84 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, intial sxale=1">
-    <title>AQWA</title>
-    <!---Link to style sheets--->
-    <link href="css/jquery-ui.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
-    <!---Link to Java--->
-    <script  src = "https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script type="text/javascript" src="js/javascript.js"></script>
-    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AQWA</title>
+
+  <!-- Stylesheets -->
+  <link href="css/jquery-ui.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- Scripts -->
+  <script src="js/screen.js"></script>
+  <script src="js/nav.js" defer></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="js/javascript.js"></script>
+  <script src="js/canvas.js"></script>
+  <script src="js/smoke.js"></script>
+  <script src="js/magic-panel.js" defer></script>
+  <script src="js/magic.js" defer></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 </head>
+
 <body>
-    <header>
-        <table width = "100%" border="1px">
-            <tbody>
-                <tr>
-                    <td width="100" height="100" rowspan="2"><img src="img/Logo1.png" width="100" height="100" alt="AQWALogo"/>
-                    </td>
-                    <td colspan="5" align="center">
-                        <h1>Arcane Quandaries With Archibald</h1>
-                    </td>
-                </tr>
+  <div class="aspect-container">
+    <div class="viewport">
+      <div class="parrallax-wrapper">
+        <img src="img/aqwaparallax.png" class="parrallax-image" alt="Background">
 
-                <tr>	
-                    <td width="75%" class="single" align="right">
-                        <!--filler--> 
-                    </td>
-                    <td>  
-                <div class="navibar">
-                    <div class="dropdown">
-                    <button class="dropbtn">Navigation
-                        <i class="fa fa-caret-down"></i>
-                    </button>
-                        <div class="dropdown-content">
-                            <a href="index.html">Home</a>
-                            <a href="about.html">About</a>
-                            <a href="contact.html">Contact</a>
-                        </div>
-                    </div>
-                </div> 
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </header>
-    <div class="parrallax">
-    <main>    
-        <br>
-<div class="wrapper">
-  <div class="content">
-  	<div class="main">
-        
-     <h2>Archibald is currently moving the tower...Things may be out of place</h2>
-			 <div id="tabContainer">
-				<ul>
-				  <li><a href="#panel1">Season 1</a></li>
-				  <li><a href="#panel2">Characters</a></li>
-				  <li><a href="#panel3">Segments</a></li>
-                  <li><a href="#panel4">Sponsors</a></li>
+        <!-- Hover images -->
+        <img class="flower-hover" src="img/flowerA.png" alt="Flower Highlight">
+        <img class="skull-hover" src="img/skullA.png" alt="Skull Highlight">
+        <img class="bookcase-hover" src="img/bookcaseA.png" alt="Bookcase Highlight">
+        <img class="crow-hover" src="img/crowA.png" alt="Crow Highlight">
+        <img class="fireplace-hover" src="img/fireplaceA.png" alt="Fireplace Highlight">
+        <img class="sigil-hover" src="img/sigilA.png" alt="Sigil Highlight">
+        <img class="boots-hover" src="img/bootsA.png" alt="Boots Highlight">
 
-				  </ul>
-				<!-- Season 1 -->
-				<div id="panel1">
-                    <!--Spotify-->
-                    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/show/0zFCMVhVlpyykIwCMQckoj?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-				</div>
-				<!-- Characters 2 -->
-				<div id="panel2">
-                     <div id="tabContainer2">
-                            <ul>
-                              <li><a href="#panel5">Archibald</a></li>
-                              <li><a href="#panel6">Reggie</a></li>
-                              <li><a href="#panel7">Jeffery</a></li>
-                              <li><a href="#panel8">Ursilla</a></li>
-                              <li><a href="#panel9">Producer</a></li>
-                              </ul>
-                            <!-- Archibald -->
-                            <div id="panel5">
-                                <p><strong>Arrogant & Dramatic: </strong> Archibald is supremely confident in his actions, believing that every choice he makes is the right one, no matter the consequences. He’s convinced that he has control over the chaos he’s unleashed, even though it's clear that it’s spiraling out of his grasp. This reflects his dramatic flair, as he views himself as the ultimate force of power.
-                                    <br>
-                                    <br>
-                                <strong>Obsessed with Power: </strong> His obsession with domination and control is evident in every verse. Even when things go wrong, he doesn’t see his own failure—he still thinks he can reign supreme, even over the beast he has unleashed. His arrogance drives him to take responsibility for everything, even when it's clear that he's not fully in control.
-                                    <br>
-                                    <br>
+        <canvas id="myCanvas" class="steam-canvas"></canvas>
 
-                                <strong>Blunt & Vulgar: </strong> Archibald’s language is unrefined and filled with expletives. He curses freely and often, emphasizing his brutal and raw nature. This gives him a sense of being unapologetically rough around the edges.
-                                    <br>
-                                    <br>
-                                <strong>No Remorse: </strong> He shows no sign of regret or second-guessing. There’s no hesitation, no questioning his actions. Even as the world burns around him, Archibald stands firm in his belief that he’s doing the right thing, no matter the cost.</p>
-                            </div>
-                            <!-- Reggie -->
-                            <div id="panel6">
-                                <p><strong>Shapeshifter: </strong> Reggie is a shapeshifter who changes races every time he dies or simply feels like it. Currently, he is a dragonborn, but he was previously a tiefling. His fluidity in form is matched by his adaptability in personality and behavior.
-                                    <br><br>
-                                <strong>Sexual Deviant: </strong> Reggie has a significant number of people he's slept with. His sexual behavior is far from conventional, and he embraces a hedonistic, no-strings-attached approach to intimacy. He has little regard for societal expectations when it comes to his romantic or sexual life.
-                                    <br><br>
-                                <strong>Almost as Old as Archibald: </strong> Reggie is nearly as old as Archibald, having seen much of the world’s history unfold alongside his companion. Their bond is long-standing, though it is more of a reluctant friendship than anything affectionate.
-                                    <br><br>
-                                <strong>Pragmatic & Sarcastic: </strong> Reggie is pragmatic and realistic, offering sarcastic commentary on the chaos around him. His sarcasm cuts through Archibald’s grandiose delusions, giving him a grounded perspective on events. Reggie is not easily impressed and tends to find humor in the absurdity of situations.</p>
-                            </div>
-                            <!-- Jeffery -->
-                            <div id="panel7">
-                              <p> here is Jeffery section, IDK what to put here</p>
+        <div class="logo-container">
+          <img src="img/Logo1_transparent.png" alt="AQWA Logo" class="site-logo">
+        </div>
 
-                            </div>
-                            <!-- Ursilla -->
-                            <div id="panel8">
-                                <p><strong>Info: </strong> better known as Uwu, is Archibald’s accountant, responsible for managing his vast wealth and ensuring financial stability. While Archibald is consumed by power and world domination, she remains fixated on the bottom line. If he neglects financial matters, she takes control, making sure everything is accounted for and profitable.
-                                <br><br>
-                                <strong>Personality: </strong> Ursilla is loud, brash, and completely unafraid to make herself heard. Despite her small size, she dominates conversations with sheer force of will. She has no patience for nonsense, refuses to be intimidated, and is unimpressed by power or grandiosity. Unlike others who fear Archibald, she treats him like a reckless fool who constantly needs supervision.
-                                <br><br>
-                                <strong>Relationship with Archibald: </strong> Ursilla is perpetually frustrated with Archibald’s disregard for financial planning. His dramatic, impulsive decisions often conflict with her practical mindset, leading to frequent shouting matches. However, she understands that he won’t handle things himself, so she steps in to take control whenever necessary. She doesn’t ask for permission—she just does what needs to be done.
-                                <br><br>
-                                <strong>Work Ethic & Motivation: </strong> Ursilla is fiercely business-minded, always looking for ways to increase profits and cut unnecessary expenses. She has no ethical concerns when it comes to making money—taxation, investments, or outright extortion are all valid strategies in her eyes. To her, financial security is the true foundation of power, and she refuses to let Archibald’s theatrics ruin it.
-                                <br><br>
-                                <strong>Behavior & Interaction Style: </strong> Ursilla is direct, blunt, and utterly unapologetic. She doesn’t sugarcoat her words and often resorts to yelling to get her point across. While she constantly argues with Archibald, she remains indispensable—without her, his empire would likely collapse under its own excess. She doesn’t try to change him or rein him in; she simply ensures that, no matter how chaotic things become, the finances remain in check.</p>
-                            </div>
-                            <!-- Producer -->
-                            <div id="panel9">
-                                <p><strong>Name: </strong>CAW...
-                                <br><br>
-                                <strong>Position:</strong>Caw, Caw, Caw
-                                <br><br>
-                                <strong>Background:</strong>CAAAAAAWWWW</p>
-                            </div>
-                        </div>
-                    </div>
-				<!-- Segments -->
-				<div id="panel3">
-                    <div id="tabContainer3">
-                            <ul>
-                              <li><a href="#panel10">MLH</a></li>
-                              <li><a href="#panel11">ABC News</a></li>
-                              <li><a href="#panel12">Cooking With Reggie</a></li>
-                              <li><a href="#panel13">Meet Your Conqueror</a></li>
-                              </ul>
-                            <!-- Magical Life Hacks -->
-                            <div id="panel10">
-                                <p><strong>Magical Life Hacks: </strong> Need Description.
-                            </div>
-                            <!-- ABC News -->
-                            <div id="panel11">
-                                <p><strong>ABC News: </strong> Needs Desciprion.</p>
-                            </div>
-                            <!-- Cooking With Reggie-->
-                            <div id="panel12">
-                              <p><strong>Cooking With Reggie: </strong> Needs Desciprion.</p>
-
-                            </div>
-                            <!-- Meet Your Conqueror -->
-                            <div id="panel13">
-                                <p><strong>Meet Your Conqueror: </strong> Needs Desciprion.</p></p>
-                            </div>
-                        </div>
-				</div>
-                <!-- Sponsors -->
-				<div id="panel4">
-                    <div id="tabContainer4">
-                            <ul>
-                              <li><a href="#panel20">Tagatha</a></li>
-                              <li><a href="#panel21">Rizzo</a></li>
-                              <li><a href="#panel22">BreakALeg Tavern</a></li>
-                              <li><a href="#panel23">Tittle Tattle</a></li>
-                              <li><a href="#panel24">A.R.CH.I.B.A.L.D.</a></li> 
-                              <li><a href="#panel25">Chad Longshanks</a></li>
-                              <li><a href="#panel26">HollyVale</a></li>
-                              <li><a href="#panel27">I.R.C.</a></li> 
-                              </ul>
-                            <!-- Tagatha-->
-                            <div id="panel20">
-                                <p><strong>Acid Pools of Tagatha: </strong> Need Description.
-                            </div>
-                            <!-- Rizzo -->
-                            <div id="panel21">
-                                <p><strong>Rizzo: </strong> Needs Desciprion.</p>
-                            </div>
-                            <!-- BreakALeg-->
-                            <div id="panel22">
-                              <p><strong>BreakALeg Tavern: </strong> Needs Desciprion.</p>
-                            </div>
-                            <!-- Tittle Tattle-->
-                            <div id="panel23">
-                                <p><strong>Tittle Tattle AI: </strong> Needs Desciprion.</p>
-                            </div>
-                            <!--A.R.CH.I.B.A.L.D-->
-                            <div id="panel24">
-                                <p><strong>Altruistic Refuge Center Helping Isolated Babes and Lonely Development: </strong> Needs Desciprion.</p>
-                            </div>
-                            <!-- Chad Longshanks-->
-                            <div id="panel25">
-                                <p><strong>Chad Longshanks: </strong> Needs Desciprion.</p>
-                            </div>
-                            <!-- HollyVale-->
-                            <div id="panel26">
-                                <p><strong>HollyVale Tea: </strong> Needs Desciprion.</p>
-                            </div>
-                            <!-- I.R.C.-->
-                            <div id="panel27">
-                                <p><strong>Illadia's Ruling Council: </strong> Needs Desciprion.</p>
-                            </div>
-                        </div>  
-				</div>
-                
+        <!-- Hotspot containers -->
+        <div class="flower-container">
+          <div class="flower-hotspot"></div>
+        </div>
+        <div class="skull-container">
+          <div class="skull-hotspot"></div>
+        </div>
+        <div class="bookcase-container">
+          <div class="bookcase-hotspot"></div>
+        </div>
+        <div class="crow-container">
+          <div class="crow-hotspot"></div>
+        </div>
+        <div class="fireplace-container">
+          <div class="fireplace-hotspot"></div>
+        </div>
+        <div class="sigil-container">
+          <div class="sigil-hotspot"></div>
+        </div>
+        <div class="window-container">
+          <div class="window-hotspot"></div>
+        </div>
+        <div class="boots-container">
+          <div class="boots-hotspot"></div>
+        </div>
+      </div>
+    </div>
   </div>
+
+  <!--- Magical Panel Overlay (moved OUTSIDE layout containers) --->
+  <div id="magic-panel" class="magic-panel hidden">
+    <div class="magic-content">
+      <button class="close-button" onclick="closeMagicPanel()">✖</button>
+      <div class="panel-inner">
+        Content will be dynamically filled 
+      </div>
+    </div>
   </div>
-    </div>
-       
-    </main>
-    <div style="flex-grow:1"></div>
-<div style="flex-grow:1"></div>
-<div style="flex-grow:1"></div>
-<div class="fpadding">
-<footer>
-<table width = "100%" height ="100%" border="1px">
-	<tr>
-		<td>
-  <p align="center">Copywright &copy; 2025</p>
-		</td>
-	</tr>
-	</table>
-</footer>
-    </div>
-    </div>
-</body>   
+</body>
 </html>
