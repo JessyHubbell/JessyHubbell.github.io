@@ -4,28 +4,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AQWA – Mobile</title>
-    <script type="text/javascript" src="js/screen.js"></script>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background: url('img/aqwaparallax.png') no-repeat center center fixed;
-            background-size: cover;
-            color: white;
-            font-family: sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            text-align: center;
-        }
-    </style>
-</head>
+    <!---CSS--->
+    <link href="css/jquery-ui.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/mstyles.css">    
+    <!---Java--->
+    <script src="js/screen.js"></script>
+    <script  src = "https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="js/mobilenav.js"></script>
+    <script src ="js/magicpanel.js"></script>
+    <script type="text/javascript" src="js/javascript.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+     </head>
 <body>
-    <div>
-        <h1>AQWA</h1>
-        <p>This magical experience is best enjoyed on a larger screen.</p>
-        <p>Come back on a desktop for the full enchanted effect!</p>
+        <div class="parrallax">
+    <header>
+        <table width = "100%" border="1px">
+            <tbody>
+                <tr>
+                    <td width="100" height="100" rowspan="2"><img src="img/Logo1_transparent.png" width="100" height="100" alt="AQWALogo"/>
+                    </td>
+                    <td colspan="5" align="center">
+                        <h1>Arcane Quandaries</h1>
+                    </td>
+                </tr>
+
+                <tr>	
+                    <td width="75%" class="single" align="right">
+                        <!--filler--> 
+            <h2>This magical experience is best enjoyed on a larger screen.</h2>
+                    </td>
+                    <td>  
+                <div class="navibar">
+                    <div class="dropdown">
+                    <button class="dropbtn">Navigation
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                        <div class="dropdown-content">
+    <a href="#" class="magic-link" data-panel="sponsors">Sponsors</a>
+    <a href="#" class="magic-link" data-panel="segments">Segments</a>
+    <a href="#" class="magic-link" data-panel="store">Store</a>
+    <a href="#" class="magic-link" data-panel="listen">Listen</a>
+    <a href="#" class="magic-link" data-panel="contact">Contact</a>
+    <a href="#" class="magic-link" data-panel="credits">Credits</a>
+                        </div>
+                    </div>
+                </div> 
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </header>
+<audio id="click-sound" src="sfx/magic-chime.mp3" preload="auto"></audio>
+<div id="mobilemagicpanel" class="magic-panel">
+  <div class="magic-content"></div>
+</div>
     </div>
 </body>
 </html>
