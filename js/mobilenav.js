@@ -1,51 +1,78 @@
 document.addEventListener("DOMContentLoaded", function () {
   const panelContent = {
     sponsors: `
-      <h2>Sponsors</h2>
-      <div id="sponsor-accordion" class="accordion-menu">
-        <div class="accordion-item">
-          <button class="accordion-toggle">Tagatha</button>
-          <div class="accordion-content">
-            <p>The Acid Pools of Tagatha is a brutalist spa retreat where serenity and suffering go hand in hand. Offering violently invigorating treatments, perilous yoga, and caustic relaxation, it's where tension melts, sometimes along with your skin. Guided by sadistic sages and bound by ironclad waivers, it's the ultimate escape... for those who survive.</p>
-          </div>
-        </div>
-        <div class="accordion-item">
-          <button class="accordion-toggle">Rizzo</button>
-          <div class="accordion-content">
-            <p>Rizzos’ is your ever-changing, interdimensional marketplace, run by the unpredictable and charismatic Rizzo himself. Whether it's the mysterious Bag of Bakkaw or a shelf of bizarre wonders you didn't know you needed, every visit offers a new surprise. From meat to magic, feathers to fortune, Rizzos’ is where curiosity meets cosmic retail.</p>    
-          </div>
-        </div>
-        <div class="accordion-item">
-          <button class="accordion-toggle">Break A Leg</button>
-          <div class="accordion-content">
-            <p>Coming Soon</p>
-          </div>
-        </div>
-        <div class="accordion-item">
-          <button class="accordion-toggle">Archibald Cares</button>
-          <div class="accordion-content">
-            <p>He doesn't, but we wrote this section anyway.</p>
-          </div>
-        </div>
-        <div class="accordion-item">
-          <button class="accordion-toggle">TittleTattle</button>
-          <div class="accordion-content">
-            <p>Coming Soon</p>
-          </div>
-        </div>
-        <div class="accordion-item">
-          <button class="accordion-toggle">I.R.C.</button>
-          <div class="accordion-content">
-            <p>Coming Soon</p>
-          </div>
-        </div>
-        <div class="accordion-item">
-          <button class="accordion-toggle">Caprine Curios</button>
-          <div class="accordion-content">
-            <p>Coming Soon</p>
-          </div>
-        </div>
+  <h2>Sponsors</h2>
+  <div id="sponsor-accordion" class="accordion-menu">
+    <div class="accordion-item">
+      <button class="accordion-toggle">Tagatha</button>
+      <div class="accordion-content">
+        <p>The Acid Pools of Tagatha is a brutalist spa retreat where serenity and suffering go hand in hand. Offering violently invigorating treatments, perilous yoga, and caustic relaxation, it's where tension melts, sometimes along with your skin. Guided by sadistic sages and bound by ironclad waivers, it's the ultimate escape... for those who survive.</p>
+            <audio src="aud/tagathaad.mp3" controls>
+                Your browser does not support the audio element.
+            </audio>
       </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-toggle">Rizzo</button>
+      <div class="accordion-content">
+       <p>Rizzos’ is your ever-changing, interdimensional marketplace, run by the unpredictable and charismatic Rizzo himself. Whether it's the mysterious Bag of Bakkaw or a shelf of bizarre wonders you didn't know you needed, every visit offers a new surprise. From meat to magic, feathers to fortune, Rizzos’ is where curiosity meets cosmic retail.</p>
+            <audio src="aud/WesternRizzo.mp3" controls>
+                Your browser does not support the audio element.
+            </audio>
+            <audio src="aud/rizzoRemix.mp3" controls>
+                Your browser does not support the audio element.
+            </audio>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-toggle">Break A Leg</button>
+      <div class="accordion-content">
+        <p>A quaint little pub we once had a few mugs at. Reggie scored (in more than one way) the highest out of all the tosses.</p>
+            <audio src="aud/BreakALeg.mp3" controls>
+                Your browser does not support the audio element.
+            </audio>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-toggle">Archibald Cares</button>
+      <div class="accordion-content">
+        <p>He doesn't, but we wrote this section anyway.</p>
+            <audio src="aud/ArchibaldCares.mp3" controls>
+                Your browser does not support the audio element.
+            </audio>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-toggle">TittleTattle</button>
+      <div class="accordion-content">
+        <p>Tittle Tattle AI will help write your next manuscript. That is if you do not mind paying for enslaved goblins to ramble for pages and pages</p>
+            <audio src="aud/tittletattleAI.mp3" controls>
+                Your browser does not support the audio element.
+            </audio>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-toggle">I.R.C.</button>
+      <div class="accordion-content">
+        <p>The Illadia Rulling council is sponsoring us? Are you doing your part?</p>
+            <audio src="aud/IRC_Doyourpart.mp3" controls>
+                Your browser does not support the audio element.
+            </audio>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-toggle">Caprine Curios</button>
+      <div class="accordion-content">
+        <p>Chad Chadwick Longshanks, need we say more?</p>
+            <audio src="aud/ChadLUBE.mp3" controls>
+                Your browser does not support the audio element.
+            </audio>
+            <audio src="aud/Garggle.mp3" controls>
+                Your browser does not support the audio element.
+            </audio>
+      </div>
+    </div>
+  </div>
     `,
     segments: `
       <h2>Segments</h2>
