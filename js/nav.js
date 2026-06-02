@@ -86,6 +86,7 @@ openMagicPanel(`
       <button class="accordion-toggle">Tagatha</button>
       <div class="accordion-content">
         <p>The Acid Pools of Tagatha is a brutalist spa retreat where serenity and suffering go hand in hand. Offering violently invigorating treatments, perilous yoga, and caustic relaxation, it's where tension melts, sometimes along with your skin. Guided by sadistic sages and bound by ironclad waivers, it's the ultimate escape... for those who survive.</p>
+        <p><b>Acid Pool of Tagatha</b></p>
             <audio src="aud/tagathaad.mp3" controls>
                 Your browser does not support the audio element.
             </audio>
@@ -95,9 +96,11 @@ openMagicPanel(`
       <button class="accordion-toggle">Rizzo</button>
       <div class="accordion-content">
        <p>Rizzos’ is your ever-changing, interdimensional marketplace, run by the unpredictable and charismatic Rizzo himself. Whether it's the mysterious Bag of Bakkaw or a shelf of bizarre wonders you didn't know you needed, every visit offers a new surprise. From meat to magic, feathers to fortune, Rizzos’ is where curiosity meets cosmic retail.</p>
+            <p><b>Bucket of BaCaaww!</b></p>
             <audio src="aud/WesternRizzo.mp3" controls>
                 Your browser does not support the audio element.
             </audio>
+            <p><b>Axe of BeeHeading</b></p>
             <audio src="aud/rizzoRemix.mp3" controls>
                 Your browser does not support the audio element.
             </audio>
@@ -107,6 +110,7 @@ openMagicPanel(`
       <button class="accordion-toggle">Break A Leg</button>
       <div class="accordion-content">
         <p>A quaint little pub we once had a few mugs at. Reggie scored (in more than one way) the highest out of all the tosses.</p>
+            <p><b>Summer of Fun</b></p>
             <audio src="aud/BreakALeg.mp3" controls>
                 Your browser does not support the audio element.
             </audio>
@@ -116,6 +120,7 @@ openMagicPanel(`
       <button class="accordion-toggle">Archibald Cares</button>
       <div class="accordion-content">
         <p>He doesn't, but we wrote this section anyway.</p>
+            <p><b>A.R.C.H.I.B.A.L.D. Cares</b></p>
             <audio src="aud/ArchibaldCares.mp3" controls>
                 Your browser does not support the audio element.
             </audio>
@@ -125,6 +130,7 @@ openMagicPanel(`
       <button class="accordion-toggle">TittleTattle</button>
       <div class="accordion-content">
         <p>Tittle Tattle AI will help write your next manuscript. That is if you do not mind paying for enslaved goblins to ramble for pages and pages</p>
+            <p><b>Tittle Tattle</b></p>
             <audio src="aud/tittletattleAI.mp3" controls>
                 Your browser does not support the audio element.
             </audio>
@@ -134,6 +140,7 @@ openMagicPanel(`
       <button class="accordion-toggle">I.R.C.</button>
       <div class="accordion-content">
         <p>The Illadia Rulling council is sponsoring us? Are you doing your part?</p>
+            <p><b>IRC</b></p>
             <audio src="aud/IRC_Doyourpart.mp3" controls>
                 Your browser does not support the audio element.
             </audio>
@@ -143,9 +150,11 @@ openMagicPanel(`
       <button class="accordion-toggle">Caprine Curios</button>
       <div class="accordion-content">
         <p>Chad Chadwick Longshanks, need we say more?</p>
+            <p><b>Liquid Uhhh Buoyancy Emulsion</b></p>
             <audio src="aud/ChadLUBE.mp3" controls>
                 Your browser does not support the audio element.
             </audio>
+            <p><b>Gathering Amplified Refined Gulch Geyser Life Emulsion</b></p>
             <audio src="aud/Garggle.mp3" controls>
                 Your browser does not support the audio element.
             </audio>
@@ -215,7 +224,7 @@ if (bootsHotspot) {
 
     openMagicPanel(`
       <h2>Arcane Quandaries Store</h2>
-      <p><em>Coming Soon.</em> Dust off your coin purse and stay tuned...</p>
+      <p><em>Coming Soon.</em> At least when we have more listeners, we already have items ready for your perusal. Like a CaaWNtent Shirt and AQWA Beanie. So dust off your coin purse, tell your friends, tell your friends friends, tell your friends parents and stay tuned...</p>
     `, bootsHotspot);
   });
 }
@@ -231,7 +240,7 @@ if (windowHotspot) {
               <h2 class="hero_header">Arcane Quandaries <span class="light">For Archibald </span></h2>
               <br>
               <br>
-                <center><form action="https://public.herotofu.com/v1/d8742f00-a8f9-11ee-ae0b-a7e011fe96d3" method="post" accept-charset="UTF-8">
+                <form action="https://public.herotofu.com/v1/d8742f00-a8f9-11ee-ae0b-a7e011fe96d3" method="post" accept-charset="UTF-8">
                   <div>
                     <label for="name">Your Name:</label>
                     <input style="width:200px;" name="Name" id="name" type="text" required />
@@ -253,7 +262,7 @@ if (windowHotspot) {
                       <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
                     </div>
                   </div>
-                    </form></center>
+                    </form>
             </section>
     `, windowHotspot);
   });
